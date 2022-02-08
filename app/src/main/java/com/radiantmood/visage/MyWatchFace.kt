@@ -4,24 +4,18 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.ColorMatrix
-import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
 import android.graphics.Rect
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import androidx.palette.graphics.Palette
 import android.support.wearable.watchface.CanvasWatchFaceService
 import android.support.wearable.watchface.WatchFaceService
 import android.support.wearable.watchface.WatchFaceStyle
 import android.view.SurfaceHolder
 import android.widget.Toast
-
 import java.lang.ref.WeakReference
 import java.util.Calendar
 import java.util.TimeZone
@@ -101,8 +95,6 @@ class MyWatchFace : CanvasWatchFaceService() {
         private lateinit var mTickAndCirclePaint: Paint
 
         private lateinit var mBackgroundPaint: Paint
-        private lateinit var mBackgroundBitmap: Bitmap
-        private lateinit var mGrayBackgroundBitmap: Bitmap
 
         private var mAmbient: Boolean = false
         private var mLowBitAmbient: Boolean = false
@@ -137,17 +129,10 @@ class MyWatchFace : CanvasWatchFaceService() {
             mBackgroundPaint = Paint().apply {
                 color = Color.BLACK
             }
-            mBackgroundBitmap = BitmapFactory.decodeResource(resources, R.drawable.watchface_service_bg)
-
-            /* Extracts colors from background image to improve watchface style. */
-            Palette.from(mBackgroundBitmap).generate {
-                it?.let {
-                    mWatchHandHighlightColor = it.getVibrantColor(Color.RED)
-                    mWatchHandColor = it.getLightVibrantColor(Color.WHITE)
-                    mWatchHandShadowColor = it.getDarkMutedColor(Color.BLACK)
-                    updateWatchHandStyle()
-                }
-            }
+            mWatchHandHighlightColor = Color.RED
+            mWatchHandColor = Color.WHITE
+            mWatchHandShadowColor = Color.BLACK
+            updateWatchHandStyle()
         }
 
         private fun initializeWatchFace() {
@@ -301,44 +286,6 @@ class MyWatchFace : CanvasWatchFaceService() {
             mSecondHandLength = (mCenterX * 0.875).toFloat()
             sMinuteHandLength = (mCenterX * 0.75).toFloat()
             sHourHandLength = (mCenterX * 0.5).toFloat()
-
-            /* Scale loaded background image (more efficient) if surface dimensions change. */
-            val scale = width.toFloat() / mBackgroundBitmap.width.toFloat()
-
-            mBackgroundBitmap = Bitmap.createScaledBitmap(
-                mBackgroundBitmap,
-                (mBackgroundBitmap.width * scale).toInt(),
-                (mBackgroundBitmap.height * scale).toInt(), true
-            )
-
-            /*
-             * Create a gray version of the image only if it will look nice on the device in
-             * ambient mode. That means we don"t want devices that support burn-in
-             * protection (slight movements in pixels, not great for images going all the way to
-             * edges) and low ambient mode (degrades image quality).
-             *
-             * Also, if your watch face will know about all images ahead of time (users aren"t
-             * selecting their own photos for the watch face), it will be more
-             * efficient to create a black/white version (png, etc.) and load that when you need it.
-             */
-            if (!mBurnInProtection && !mLowBitAmbient) {
-                initGrayBackgroundBitmap()
-            }
-        }
-
-        private fun initGrayBackgroundBitmap() {
-            mGrayBackgroundBitmap = Bitmap.createBitmap(
-                mBackgroundBitmap.width,
-                mBackgroundBitmap.height,
-                Bitmap.Config.ARGB_8888
-            )
-            val canvas = Canvas(mGrayBackgroundBitmap)
-            val grayPaint = Paint()
-            val colorMatrix = ColorMatrix()
-            colorMatrix.setSaturation(0f)
-            val filter = ColorMatrixColorFilter(colorMatrix)
-            grayPaint.colorFilter = filter
-            canvas.drawBitmap(mBackgroundBitmap, 0f, 0f, grayPaint)
         }
 
         /**
@@ -371,14 +318,7 @@ class MyWatchFace : CanvasWatchFaceService() {
         }
 
         private fun drawBackground(canvas: Canvas) {
-
-            if (mAmbient && (mLowBitAmbient || mBurnInProtection)) {
-                canvas.drawColor(Color.BLACK)
-            } else if (mAmbient) {
-                canvas.drawBitmap(mGrayBackgroundBitmap, 0f, 0f, mBackgroundPaint)
-            } else {
-                canvas.drawBitmap(mBackgroundBitmap, 0f, 0f, mBackgroundPaint)
-            }
+            canvas.drawColor(Color.BLACK)
         }
 
         private fun drawWatchFace(canvas: Canvas) {
