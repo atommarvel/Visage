@@ -170,7 +170,6 @@ class MyWatchFace : CanvasWatchFaceService() {
                     // The user has completed the tap gesture.
                     Log.d("araiff", "type")
                     Toast.makeText(applicationContext, R.string.message, Toast.LENGTH_SHORT).show()
-                    chimeBehavior.vibrate()
                 }
             }
             invalidate()

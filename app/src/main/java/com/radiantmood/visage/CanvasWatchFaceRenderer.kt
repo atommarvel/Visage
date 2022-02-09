@@ -13,8 +13,8 @@ import java.util.Locale
  * In charge of taking in a canvas and drawing on it.
  */
 class CanvasWatchFaceRenderer(private val context: Context) {
-    private val digitalDateFormat = SimpleDateFormat("h:mma", Locale.getDefault())
-    private var digitalTimeColor = Color.RED
+    private val digitalDateFormat = SimpleDateFormat("h:mm", Locale.getDefault())
+    private var digitalTimeColor = Color.WHITE
     private val digitalTimePaint = Paint().apply {
         color = digitalTimeColor
         strokeWidth = DIGITAL_STROKE_WIDTH
@@ -22,7 +22,9 @@ class CanvasWatchFaceRenderer(private val context: Context) {
         strokeCap = Paint.Cap.ROUND
         textAlign = Paint.Align.CENTER
         style = Paint.Style.FILL
-        typeface = Typeface.createFromAsset(context.assets, "firacode.tff")
+        typeface = Typeface.DEFAULT
+        textSize = 100f
+        typeface = context.resources.getFont(R.font.firacode)
     }
 
     fun onDraw(canvas: Canvas, calendar: Calendar, surfaceSize: CalculatedRect, isAmbient: Boolean) {
@@ -35,9 +37,8 @@ class CanvasWatchFaceRenderer(private val context: Context) {
     }
 
     private fun drawWatchFace(canvas: Canvas, calendar: Calendar, surfaceSize: CalculatedRect, isAmbient: Boolean) {
-        val timeString = digitalDateFormat.format(calendar).lowercase()
-//        canvas.drawText(timeString, surfaceSize.centerX, surfaceSize.centerY, digitalTimePaint)
-        canvas.drawText("lol", surfaceSize.centerX, surfaceSize.centerY, digitalTimePaint)
+        val timeString = digitalDateFormat.format(calendar.time).lowercase()
+        canvas.drawText(timeString, surfaceSize.centerX, surfaceSize.centerY, digitalTimePaint)
 
         /*
          * Consider drawing less things in ambient and only update once a minute

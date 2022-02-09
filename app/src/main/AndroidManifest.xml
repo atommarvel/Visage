@@ -2,14 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.radiantmood.visage">
 
-	<uses-permission android:name="android.permission.WAKE_LOCK" />
-
-	<!-- Required for complications to receive complication data and open the provider chooser. -->
-	<uses-permission android:name="com.google.android.wearable.permission.RECEIVE_COMPLICATION_DATA" />
-
-	<uses-permission android:name="android.permission.VIBRATE" />
-
 	<!-- Required to act as a custom watch face. -->
+	<uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 	<application
 		android:allowBackup="true"
 		android:icon="@mipmap/ic_launcher"
@@ -66,5 +60,7 @@
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 
 	<uses-permission android:name="com.google.android.wearable.permission.RECEIVE_COMPLICATION_DATA" />
+
+	<uses-permission android:name="android.permission.VIBRATE" />
 
 </manifest>
