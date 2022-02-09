@@ -26,6 +26,7 @@ class ChimeBehavior(val context: Context) {
     }
 
     init {
+        // TODO: unregister in onDestroy
         context.registerReceiver(receiver, IntentFilter("com.radiantmood.HOURLY_CHIME"))
         setupNextAlarm()
     }
