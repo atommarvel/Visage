@@ -22,22 +22,17 @@ class ChimeBehavior(val context: Context) {
     }
 
     init {
-        setupNextAlarm()
         context.registerReceiver(receiver, IntentFilter("com.radiantmood.HOURLY_CHIME"))
-        vibrate()
+        setupNextAlarm()
     }
 
     private fun onAlarm() {
-        chime()
+        vibrate()
         setupNextAlarm()
     }
 
-    private fun chime() {
-        vibrate()
-    }
-
     private fun setupNextAlarm() {
-        val nextChime = findNextMinChime()
+        val nextChime = findNextChime()
         val ambientStateIntent = Intent("com.radiantmood.HOURLY_CHIME")
         val pIntentFlags = PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
         val pIntent = PendingIntent.getBroadcast(
@@ -72,6 +67,5 @@ class ChimeBehavior(val context: Context) {
 
     companion object {
         private const val HOUR_IN_MILLIS = 1000 * 60 * 60
-        private const val HALF_HOUR_IN_MILLIS = HOUR_IN_MILLIS / 2
     }
 }
