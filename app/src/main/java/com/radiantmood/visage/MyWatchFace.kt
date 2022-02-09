@@ -101,6 +101,7 @@ class MyWatchFace : CanvasWatchFaceService() {
 
         override fun onDestroy() {
             updateTimeHandler.removeMessages(MSG_UPDATE_TIME)
+            chimeBehavior.onDestroy()
             super.onDestroy()
         }
 

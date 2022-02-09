@@ -15,7 +15,7 @@ import java.util.Calendar
  * Inspired by this SO (and Calarm): https://stackoverflow.com/questions/34397315/android-wear-watch-face-vibrate-with-screen-off
  *
  */
-class ChimeBehavior(val context: Context) {
+class ChimeBehavior(private val context: Context) {
 
     private val vibrator by lazy { getSystemService(context, Vibrator::class.java) }
     private val am by lazy { getSystemService(context, AlarmManager::class.java) }
@@ -26,9 +26,12 @@ class ChimeBehavior(val context: Context) {
     }
 
     init {
-        // TODO: unregister in onDestroy
         context.registerReceiver(receiver, IntentFilter("com.radiantmood.HOURLY_CHIME"))
         setupNextAlarm()
+    }
+
+    fun onDestroy() {
+        context.unregisterReceiver(receiver)
     }
 
     private fun onAlarm() {
@@ -51,15 +54,26 @@ class ChimeBehavior(val context: Context) {
     }
 
     private fun findNextChime(): Calendar = Calendar.getInstance().apply {
-        // TODO: don't chime during 9pm - 11am
-        val min = get(Calendar.MINUTE)
-        if (min >= 30) {
-            // go forward an hour
-            timeInMillis += HOUR_IN_MILLIS
-            // set min to 0
+        // Don't chime from 9pm to 10am
+        val hour = get(Calendar.HOUR_OF_DAY)
+        @Suppress("ConvertTwoComparisonsToRangeCheck") // performance
+        if (hour >= 21) {
+            add(Calendar.DAY_OF_YEAR, 1)
+        }
+        if (hour >= 21 || hour < 10) {
+            set(Calendar.HOUR_OF_DAY, 10)
             set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
         } else {
-            set(Calendar.MINUTE, 30)
+            val min = get(Calendar.MINUTE)
+            if (min >= 30) {
+                // go forward an hour
+                timeInMillis += HOUR_IN_MILLIS
+                // set min to 0
+                set(Calendar.MINUTE, 0)
+            } else {
+                set(Calendar.MINUTE, 30)
+            }
         }
     }
 
