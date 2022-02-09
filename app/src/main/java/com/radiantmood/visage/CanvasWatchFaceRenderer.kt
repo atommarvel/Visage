@@ -25,7 +25,7 @@ class CanvasWatchFaceRenderer(private val context: Context) {
         textAlign = Paint.Align.CENTER
         style = Paint.Style.FILL
         typeface = Typeface.DEFAULT
-        textSize = 120f // TODO: make this not arbitrary?
+        textSize = 120f // TODO #2ar2t52: make font size not arbitrary
         typeface = context.resources.getFont(R.font.firacode)
     }
 
@@ -44,8 +44,8 @@ class CanvasWatchFaceRenderer(private val context: Context) {
         digitalTimePaint.getTextBounds(timeString, 0, timeString.length, r)
         val centerY = surfaceSize.centerY + abs(r.height()) / 2
         canvas.drawText(timeString, surfaceSize.centerX, centerY, digitalTimePaint)
-        // TODO: draw watch battery complication
-        // TODO: draw time until next meeting
+        // TODO #2ar2rt0: draw watch battery complication
+        // TODO #2ar2rtm: draw time until next meeting
 
         /*
          * Consider drawing less things in ambient and only update once a minute

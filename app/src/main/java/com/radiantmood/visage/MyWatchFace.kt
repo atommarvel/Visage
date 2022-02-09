@@ -43,7 +43,7 @@ private const val MSG_UPDATE_TIME = 0
  * in the Google Watch Face Code Lab:
  * https://codelabs.developers.google.com/codelabs/watchface/index.html#0
  */
-// TODO: migrate to new APIs: https://github.com/android/wear-os-samples/blob/main/WatchFaceKotlin/app/src/main/java/com/example/android/wearable/alpha/AnalogWatchFaceService.kt
+// TODO #2ar2tgf: migrate to new WatchFace APIs
 class MyWatchFace : CanvasWatchFaceService() {
 
     override fun onCreateEngine(): Engine {
