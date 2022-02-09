@@ -12,6 +12,7 @@ import android.os.Message
 import android.support.wearable.watchface.CanvasWatchFaceService
 import android.support.wearable.watchface.WatchFaceService
 import android.support.wearable.watchface.WatchFaceStyle
+import android.util.Log
 import android.view.SurfaceHolder
 import android.widget.Toast
 import java.lang.ref.WeakReference
@@ -65,6 +66,7 @@ class MyWatchFace : CanvasWatchFaceService() {
 
         private lateinit var calendar: Calendar
         private lateinit var renderer: CanvasWatchFaceRenderer
+        private lateinit var chimeBehavior: ChimeBehavior
 
         private var isTimeZoneReceiverRegistered = false
         private var isMuteMode: Boolean = false
@@ -93,6 +95,7 @@ class MyWatchFace : CanvasWatchFaceService() {
             )
             calendar = Calendar.getInstance()
             renderer = CanvasWatchFaceRenderer(this@MyWatchFace)
+            chimeBehavior = ChimeBehavior(this@MyWatchFace)
         }
 
         override fun onDestroy() {
@@ -115,21 +118,17 @@ class MyWatchFace : CanvasWatchFaceService() {
             super.onAmbientModeChanged(inAmbientMode)
             isAmbient = inAmbientMode
 
-            updateWatchHandStyle()
-
-            // Check and trigger whether or not timer should be running (only
-            // in active mode).
-            updateTimer()
-        }
-
-        private fun updateWatchHandStyle() {
             if (isAmbient) {
-                // Update paints to white
-                // turn off paints anti aliasing
-                // remove shadowlayer
+                // example ambient changes:
+                // - Update paints to white
+                // - turn off paints anti aliasing
+                // - remove shadowlayer
             } else {
                 // opposite of ambient
             }
+
+            // Check and trigger whether or not timer should be running (only in active mode).
+            updateTimer()
         }
 
         override fun onInterruptionFilterChanged(interruptionFilter: Int) {
@@ -147,7 +146,6 @@ class MyWatchFace : CanvasWatchFaceService() {
 
         override fun onSurfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
             super.onSurfaceChanged(holder, format, width, height)
-
             /*
              * Find the coordinates of the center point on the screen, and ignore the window
              * insets, so that, on round watches with a "chin", the watch face is centered on the
@@ -168,11 +166,12 @@ class MyWatchFace : CanvasWatchFaceService() {
                 WatchFaceService.TAP_TYPE_TOUCH_CANCEL -> {
                     // The user has started a different gesture or otherwise cancelled the tap.
                 }
-                WatchFaceService.TAP_TYPE_TAP ->
+                WatchFaceService.TAP_TYPE_TAP -> {
                     // The user has completed the tap gesture.
-                    // TODO: Add code to handle the tap gesture.
-                    Toast.makeText(applicationContext, R.string.message, Toast.LENGTH_SHORT)
-                        .show()
+                    Log.d("araiff", "type")
+                    Toast.makeText(applicationContext, R.string.message, Toast.LENGTH_SHORT).show()
+                    chimeBehavior.vibrate()
+                }
             }
             invalidate()
         }
@@ -216,7 +215,7 @@ class MyWatchFace : CanvasWatchFaceService() {
         }
 
         /**
-         * Starts/stops the [.mUpdateTimeHandler] timer based on the state of the watch face.
+         * Starts/stops the [updateTimeHandler] timer based on the state of the watch face.
          */
         private fun updateTimer() {
             updateTimeHandler.removeMessages(MSG_UPDATE_TIME)
@@ -226,7 +225,7 @@ class MyWatchFace : CanvasWatchFaceService() {
         }
 
         /**
-         * Returns whether the [.mUpdateTimeHandler] timer should be running. The timer
+         * Returns whether the [updateTimeHandler] timer should be running. The timer
          * should only run in active mode.
          */
         private fun shouldTimerBeRunning(): Boolean {
