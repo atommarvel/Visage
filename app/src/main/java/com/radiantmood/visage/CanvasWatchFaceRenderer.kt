@@ -23,7 +23,7 @@ class CanvasWatchFaceRenderer(private val context: Context) {
         textAlign = Paint.Align.CENTER
         style = Paint.Style.FILL
         typeface = Typeface.DEFAULT
-        textSize = 100f
+        textSize = 100f // TODO: make this not arbitrary?
         typeface = context.resources.getFont(R.font.firacode)
     }
 
@@ -38,6 +38,7 @@ class CanvasWatchFaceRenderer(private val context: Context) {
 
     private fun drawWatchFace(canvas: Canvas, calendar: Calendar, surfaceSize: CalculatedRect, isAmbient: Boolean) {
         val timeString = digitalDateFormat.format(calendar.time).lowercase()
+        // TODO: vertically center the text
         canvas.drawText(timeString, surfaceSize.centerX, surfaceSize.centerY, digitalTimePaint)
 
         /*

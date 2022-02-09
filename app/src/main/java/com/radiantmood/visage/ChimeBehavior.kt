@@ -11,6 +11,10 @@ import android.os.Vibrator
 import androidx.core.content.ContextCompat.getSystemService
 import java.util.Calendar
 
+/**
+ * Inspired by this SO (and Calarm): https://stackoverflow.com/questions/34397315/android-wear-watch-face-vibrate-with-screen-off
+ *
+ */
 class ChimeBehavior(val context: Context) {
 
     private val vibrator by lazy { getSystemService(context, Vibrator::class.java) }
@@ -46,6 +50,7 @@ class ChimeBehavior(val context: Context) {
     }
 
     private fun findNextChime(): Calendar = Calendar.getInstance().apply {
+        // TODO: don't chime during 9pm - 11am
         val min = get(Calendar.MINUTE)
         if (min >= 30) {
             // go forward an hour
