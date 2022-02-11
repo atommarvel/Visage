@@ -21,10 +21,10 @@ buildscript {
         activityKtxVersion = '1.4.0'
         ktxVersion = '1.7.0'
         wearVersion = '1.2.0'
-        watchFaceVersion = '1.0.0'
+        watchFaceVersion = '1.0.1'
         coroutines = '1.6.0'
-        lifecycleVersion = '2.4.0'
-        materialVersion = '1.4.0'
+        lifecycleVersion = '2.4.1'
+        materialVersion = '1.5.0'
     }
 
     repositories {
