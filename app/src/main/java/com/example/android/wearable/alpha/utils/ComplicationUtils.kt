@@ -61,6 +61,7 @@ internal const val LEFT_COMPLICATION_ID = 100
 internal const val RIGHT_COMPLICATION_ID = 101
 internal const val TOP_COMPLICATION_ID = 102
 internal const val BOTTOM_COMPLICATION_ID = 103
+internal const val LONG_BOTTOM_COMPLICATION_ID = 104
 
 /**
  * Represents the unique id associated with a complication and the complication types it supports.
@@ -130,6 +131,18 @@ sealed class ComplicationConfig(val id: Int, val supportedTypes: List<Complicati
         )
     )
 
+    class LongBottom : ComplicationConfig(
+        id = LONG_BOTTOM_COMPLICATION_ID,
+        supportedTypes = listOf(ComplicationType.LONG_TEXT),
+        defaultDataSource = SystemDataSources.DATA_SOURCE_WATCH_BATTERY,
+        bounds = RectF(
+            0.05f,
+            0.55f,
+            0.95f,
+            0.75f
+        )
+    )
+
     fun buildSlot(canvasComplicationFactory: CanvasComplicationFactory) =
         ComplicationSlot.createRoundRectComplicationSlotBuilder(
             id = id,
@@ -162,7 +175,7 @@ fun createComplicationSlotManager(
     val topComplication = ComplicationConfig.Top().buildSlot(defaultCanvasComplicationFactory)
     val bottomComplication = ComplicationConfig.Bottom().buildSlot(defaultCanvasComplicationFactory)
     return ComplicationSlotsManager(
-        listOf(topComplication, bottomComplication),
+        listOf(ComplicationConfig.LongBottom().buildSlot(defaultCanvasComplicationFactory)),
         currentUserStyleRepository
     )
 }

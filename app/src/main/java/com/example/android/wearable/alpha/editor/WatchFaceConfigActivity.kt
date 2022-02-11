@@ -27,6 +27,7 @@ import com.example.android.wearable.alpha.editor.WatchFaceConfigStateHolder.Comp
 import com.example.android.wearable.alpha.editor.WatchFaceConfigStateHolder.Companion.MINUTE_HAND_LENGTH_MINIMUM_FOR_SLIDER
 import com.example.android.wearable.alpha.utils.BOTTOM_COMPLICATION_ID
 import com.example.android.wearable.alpha.utils.LEFT_COMPLICATION_ID
+import com.example.android.wearable.alpha.utils.LONG_BOTTOM_COMPLICATION_ID
 import com.example.android.wearable.alpha.utils.RIGHT_COMPLICATION_ID
 import com.example.android.wearable.alpha.utils.TOP_COMPLICATION_ID
 import kotlinx.coroutines.Dispatchers
@@ -63,8 +64,7 @@ class WatchFaceConfigActivity : ComponentActivity() {
         binding.minuteHandLengthSlider.valueFrom = MINUTE_HAND_LENGTH_MINIMUM_FOR_SLIDER
         binding.minuteHandLengthSlider.value = MINUTE_HAND_LENGTH_DEFAULT_FOR_SLIDER
 
-        binding.preview.topComplication.setOnClickListener { onClickTopComplicationButton(it) }
-        binding.preview.bottomComplication.setOnClickListener { onClickBottomComplicationButton(it) }
+        binding.preview.bottomComplication.setOnClickListener { onClickLongBottomComplicationButton(it) }
 
         binding.minuteHandLengthSlider.addOnChangeListener { slider, value, fromUser ->
             Log.d(TAG, "addOnChangeListener(): $slider, $value, $fromUser")
@@ -139,6 +139,11 @@ class WatchFaceConfigActivity : ComponentActivity() {
     fun onClickBottomComplicationButton(view: View) {
         Log.d(TAG, "onClickBottomComplicationButton() $view")
         stateHolder.setComplication(BOTTOM_COMPLICATION_ID)
+    }
+
+    fun onClickLongBottomComplicationButton(view: View) {
+        Log.d(TAG, "onClickBottomComplicationButton() $view")
+        stateHolder.setComplication(LONG_BOTTOM_COMPLICATION_ID)
     }
 
     fun onClickTicksEnabledSwitch(view: View) {

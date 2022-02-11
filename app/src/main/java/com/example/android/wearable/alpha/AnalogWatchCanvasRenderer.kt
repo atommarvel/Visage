@@ -98,6 +98,7 @@ class AnalogWatchCanvasRenderer(
     // Default size of watch face drawing area, that is, a no size rectangle. Will be replaced with
     // valid dimensions from the system.
     private var currentWatchFaceSize = Rect(0, 0, 0, 0)
+    private var textY = 0f
     private var watchFaceCenterY: Float = 0f
     private var watchFaceCenterX: Float = 0f
     private var textBounds = Rect(0, 0, 0, 0)
@@ -205,6 +206,7 @@ class AnalogWatchCanvasRenderer(
     override fun render(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime) {
         if (currentWatchFaceSize != bounds) {
             currentWatchFaceSize = bounds
+            textY = abs(currentWatchFaceSize.height()) / 3f
             watchFaceCenterY = abs(currentWatchFaceSize.height()) / 2f
             watchFaceCenterX = abs(currentWatchFaceSize.width()) / 2f
         }
@@ -236,7 +238,7 @@ class AnalogWatchCanvasRenderer(
         val timeString = zonedDateTime.format(formatter).lowercase()
         textPaint.color = watchFaceColors.activePrimaryColor
         textPaint.getTextBounds(timeString, 0, timeString.length, textBounds)
-        canvas.drawText(timeString, watchFaceCenterX, watchFaceCenterY + (textBounds.height() / 2), textPaint)
+        canvas.drawText(timeString, watchFaceCenterX, textY + (textBounds.height() / 2), textPaint)
     }
 
     private fun drawComplications(canvas: Canvas, zonedDateTime: ZonedDateTime) {

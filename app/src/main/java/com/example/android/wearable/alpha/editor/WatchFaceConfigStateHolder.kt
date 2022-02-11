@@ -34,6 +34,7 @@ import com.example.android.wearable.alpha.utils.BOTTOM_COMPLICATION_ID
 import com.example.android.wearable.alpha.utils.COLOR_STYLE_SETTING
 import com.example.android.wearable.alpha.utils.DRAW_HOUR_PIPS_STYLE_SETTING
 import com.example.android.wearable.alpha.utils.LEFT_COMPLICATION_ID
+import com.example.android.wearable.alpha.utils.LONG_BOTTOM_COMPLICATION_ID
 import com.example.android.wearable.alpha.utils.RIGHT_COMPLICATION_ID
 import com.example.android.wearable.alpha.utils.TOP_COMPLICATION_ID
 import com.example.android.wearable.alpha.utils.WATCH_HAND_LENGTH_STYLE_SETTING
@@ -168,6 +169,7 @@ class WatchFaceConfigStateHolder(
             RIGHT_COMPLICATION_ID -> RIGHT_COMPLICATION_ID
             TOP_COMPLICATION_ID -> TOP_COMPLICATION_ID
             BOTTOM_COMPLICATION_ID -> BOTTOM_COMPLICATION_ID
+            LONG_BOTTOM_COMPLICATION_ID -> LONG_BOTTOM_COMPLICATION_ID
             else -> {
                 return
             }
