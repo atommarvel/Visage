@@ -24,30 +24,29 @@
     android:layout_width="@dimen/analog_complication_settings_preview_size"
     android:layout_height="@dimen/analog_complication_settings_preview_size"
     tools:context=".editor.WatchFaceConfigActivity">
-
+    <!--TODO: new id-->
     <Button
-        android:id="@+id/left_complication"
+        android:id="@+id/top_complication"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:onClick="onClickLeftComplicationButton"
-        android:contentDescription="@string/activity_config_complication_button_right_content_description"
+        android:contentDescription="@string/activity_config_complication_button_top_content_description"
         android:background="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintWidth_percent="0.5" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.5" />
 
+    <!--TODO: new id-->
     <Button
-        android:id="@+id/right_complication"
+        android:id="@+id/bottom_complication"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:onClick="onClickRightComplicationButton"
-        android:contentDescription="@string/activity_config_complication_button_left_content_description"
+        android:contentDescription="@string/activity_config_complication_button_bottom_content_description"
         android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintWidth_percent="0.5" />
+        app:layout_constraintHeight_percent="0.5" />
 
     <!--     TODO (codingjeremy): Add mask for screenshot and clean up UI. -->
 

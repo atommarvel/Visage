@@ -25,10 +25,11 @@ import com.example.android.wearable.alpha.databinding.ActivityWatchFaceConfigBin
 import com.example.android.wearable.alpha.editor.WatchFaceConfigStateHolder.Companion.MINUTE_HAND_LENGTH_DEFAULT_FOR_SLIDER
 import com.example.android.wearable.alpha.editor.WatchFaceConfigStateHolder.Companion.MINUTE_HAND_LENGTH_MAXIMUM_FOR_SLIDER
 import com.example.android.wearable.alpha.editor.WatchFaceConfigStateHolder.Companion.MINUTE_HAND_LENGTH_MINIMUM_FOR_SLIDER
+import com.example.android.wearable.alpha.utils.BOTTOM_COMPLICATION_ID
 import com.example.android.wearable.alpha.utils.LEFT_COMPLICATION_ID
 import com.example.android.wearable.alpha.utils.RIGHT_COMPLICATION_ID
+import com.example.android.wearable.alpha.utils.TOP_COMPLICATION_ID
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 /**
@@ -61,6 +62,9 @@ class WatchFaceConfigActivity : ComponentActivity() {
         binding.minuteHandLengthSlider.valueTo = MINUTE_HAND_LENGTH_MAXIMUM_FOR_SLIDER
         binding.minuteHandLengthSlider.valueFrom = MINUTE_HAND_LENGTH_MINIMUM_FOR_SLIDER
         binding.minuteHandLengthSlider.value = MINUTE_HAND_LENGTH_DEFAULT_FOR_SLIDER
+
+        binding.preview.topComplication.setOnClickListener { onClickTopComplicationButton(it) }
+        binding.preview.bottomComplication.setOnClickListener { onClickBottomComplicationButton(it) }
 
         binding.minuteHandLengthSlider.addOnChangeListener { slider, value, fromUser ->
             Log.d(TAG, "addOnChangeListener(): $slider, $value, $fromUser")
@@ -125,6 +129,16 @@ class WatchFaceConfigActivity : ComponentActivity() {
     fun onClickRightComplicationButton(view: View) {
         Log.d(TAG, "onClickRightComplicationButton() $view")
         stateHolder.setComplication(RIGHT_COMPLICATION_ID)
+    }
+
+    fun onClickTopComplicationButton(view: View) {
+        Log.d(TAG, "onClickTopComplicationButton() $view")
+        stateHolder.setComplication(TOP_COMPLICATION_ID)
+    }
+
+    fun onClickBottomComplicationButton(view: View) {
+        Log.d(TAG, "onClickBottomComplicationButton() $view")
+        stateHolder.setComplication(BOTTOM_COMPLICATION_ID)
     }
 
     fun onClickTicksEnabledSwitch(view: View) {

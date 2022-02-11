@@ -19,23 +19,23 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.wear.watchface.complications.data.ComplicationData
 import androidx.wear.watchface.DrawMode
 import androidx.wear.watchface.RenderParameters
+import androidx.wear.watchface.complications.data.ComplicationData
 import androidx.wear.watchface.editor.EditorSession
 import androidx.wear.watchface.style.UserStyle
 import androidx.wear.watchface.style.UserStyleSchema
 import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.WatchFaceLayer
-import com.example.android.wearable.alpha.R
-import com.example.android.wearable.alpha.data.watchface.DRAW_HOUR_PIPS_DEFAULT
 import com.example.android.wearable.alpha.data.watchface.MINUTE_HAND_LENGTH_FRACTION_DEFAULT
 import com.example.android.wearable.alpha.data.watchface.MINUTE_HAND_LENGTH_FRACTION_MAXIMUM
 import com.example.android.wearable.alpha.data.watchface.MINUTE_HAND_LENGTH_FRACTION_MINIMUM
+import com.example.android.wearable.alpha.utils.BOTTOM_COMPLICATION_ID
 import com.example.android.wearable.alpha.utils.COLOR_STYLE_SETTING
 import com.example.android.wearable.alpha.utils.DRAW_HOUR_PIPS_STYLE_SETTING
 import com.example.android.wearable.alpha.utils.LEFT_COMPLICATION_ID
 import com.example.android.wearable.alpha.utils.RIGHT_COMPLICATION_ID
+import com.example.android.wearable.alpha.utils.TOP_COMPLICATION_ID
 import com.example.android.wearable.alpha.utils.WATCH_HAND_LENGTH_STYLE_SETTING
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -45,7 +45,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 
@@ -165,12 +164,10 @@ class WatchFaceConfigStateHolder(
 
     fun setComplication(complicationLocation: Int) {
         val complicationSlotId = when (complicationLocation) {
-            LEFT_COMPLICATION_ID -> {
-                LEFT_COMPLICATION_ID
-            }
-            RIGHT_COMPLICATION_ID -> {
-                RIGHT_COMPLICATION_ID
-            }
+            LEFT_COMPLICATION_ID -> LEFT_COMPLICATION_ID
+            RIGHT_COMPLICATION_ID -> RIGHT_COMPLICATION_ID
+            TOP_COMPLICATION_ID -> TOP_COMPLICATION_ID
+            BOTTOM_COMPLICATION_ID -> BOTTOM_COMPLICATION_ID
             else -> {
                 return
             }
