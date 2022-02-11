@@ -21,7 +21,7 @@
     app:borderColor="@color/white_90"
     app:borderStyle="none"
     app:highlightColor="@color/white_30"
-    app:iconColor="@color/black"
+    app:iconColor="@color/white"
     app:rangedValuePrimaryColor="@color/white_90"
     app:rangedValueRingWidth="2dp"
     app:rangedValueSecondaryColor="@color/white_70"

@@ -103,6 +103,8 @@ class AnalogWatchCanvasRenderer(
     private var watchFaceCenterX: Float = 0f
     private var textBounds = Rect(0, 0, 0, 0)
 
+    private val chimeBehavior = ChimeBehavior(context)
+
     init {
         scope.launch {
             currentUserStyleRepository.userStyle.collect { userStyle ->
@@ -190,6 +192,7 @@ class AnalogWatchCanvasRenderer(
     override fun onDestroy() {
         Log.d(TAG, "onDestroy()")
         scope.cancel("AnalogWatchCanvasRenderer scope clear() request")
+        chimeBehavior.onDestroy()
         super.onDestroy()
     }
 
