@@ -1,0 +1,87 @@
+/*
+ * Copyright (C) 2020 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdkVersion 32
+
+    defaultConfig {
+        applicationId "com.example.android.wearable.alpha"
+        minSdkVersion 28
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/atomicfu.kotlin_module'
+    }
+
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+    implementation "androidx.core:core-ktx:$rootProject.ktxVersion"
+
+    // Kotlin components
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutines"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
+
+    implementation "androidx.activity:activity-ktx:$rootProject.activityKtxVersion"
+
+    // Lifecycle components
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleVersion"
+
+    // Material components
+    implementation "com.google.android.material:material:$rootProject.materialVersion"
+
+    // Wear libraries
+    implementation "androidx.wear:wear:$rootProject.wearVersion"
+
+    // Watch face specific libraries
+    implementation "androidx.wear.watchface:watchface-complications-data:$rootProject.watchFaceVersion"
+    implementation "androidx.wear.watchface:watchface-complications-data-source:$rootProject.watchFaceVersion"
+
+    implementation "androidx.wear.watchface:watchface:$rootProject.watchFaceVersion"
+    implementation "androidx.wear.watchface:watchface-client:$rootProject.watchFaceVersion"
+    implementation "androidx.wear.watchface:watchface-complications-rendering:$rootProject.watchFaceVersion"
+    implementation "androidx.wear.watchface:watchface-data:$rootProject.watchFaceVersion"
+    implementation "androidx.wear.watchface:watchface-editor:$rootProject.watchFaceVersion"
+    implementation "androidx.wear.watchface:watchface-style:$rootProject.watchFaceVersion"
+}
