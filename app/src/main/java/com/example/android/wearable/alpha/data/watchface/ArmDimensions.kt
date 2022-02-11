@@ -15,6 +15,7 @@
  */
 package com.example.android.wearable.alpha.data.watchface
 
+// TODO: rm
 data class ArmDimensions(
     val lengthFraction: Float,
     val widthFraction: Float,

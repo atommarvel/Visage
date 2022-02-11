@@ -37,6 +37,7 @@ import kotlinx.coroutines.launch
  * Allows user to edit certain parts of the watch face (color style, ticks displayed, minute arm
  * length) by using the [WatchFaceConfigStateHolder]. (All widgets are disabled until data is loaded.)
  */
+// TODO: rm unused settings
 class WatchFaceConfigActivity : ComponentActivity() {
     private val stateHolder: WatchFaceConfigStateHolder by lazy {
         WatchFaceConfigStateHolder(
@@ -113,11 +114,11 @@ class WatchFaceConfigActivity : ComponentActivity() {
     fun onClickColorStylePickerButton(view: View) {
         Log.d(TAG, "onClickColorStylePickerButton() $view")
 
-        // TODO (codingjeremy): Replace with a RecyclerView to choose color style (next CL)
-        // Selects a random color style from list.
+        // Go to the next color style from the list of color styles
+        val currentColorStyle = stateHolder.getColorStyle()
         val colorStyleIdAndResourceIdsList = enumValues<ColorStyleIdAndResourceIds>()
-        val newColorStyle: ColorStyleIdAndResourceIds = colorStyleIdAndResourceIdsList.random()
-
+        val currentColorIndex = colorStyleIdAndResourceIdsList.indexOf(currentColorStyle)
+        val newColorStyle: ColorStyleIdAndResourceIds = colorStyleIdAndResourceIdsList[(currentColorIndex + 1) % colorStyleIdAndResourceIdsList.size]
         stateHolder.setColorStyle(newColorStyle.id)
     }
 

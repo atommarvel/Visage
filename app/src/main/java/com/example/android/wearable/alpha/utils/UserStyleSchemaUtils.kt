@@ -31,7 +31,7 @@ import com.example.android.wearable.alpha.data.watchface.MINUTE_HAND_LENGTH_FRAC
 // being rendered.
 const val COLOR_STYLE_SETTING = "color_style_setting"
 const val DRAW_HOUR_PIPS_STYLE_SETTING = "draw_hour_pips_style_setting"
-const val WATCH_HAND_LENGTH_STYLE_SETTING = "watch_hand_length_style_setting"
+const val WATCH_HAND_LENGTH_STYLE_SETTING = "watch_hand_length_style_setting" // TODO: rm
 
 /*
  * Creates user styles in the settings activity associated with the watch face, so users can

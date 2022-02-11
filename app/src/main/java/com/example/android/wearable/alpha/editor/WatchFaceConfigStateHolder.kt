@@ -27,6 +27,7 @@ import androidx.wear.watchface.style.UserStyle
 import androidx.wear.watchface.style.UserStyleSchema
 import androidx.wear.watchface.style.UserStyleSetting
 import androidx.wear.watchface.style.WatchFaceLayer
+import com.example.android.wearable.alpha.data.watchface.ColorStyleIdAndResourceIds
 import com.example.android.wearable.alpha.data.watchface.MINUTE_HAND_LENGTH_FRACTION_DEFAULT
 import com.example.android.wearable.alpha.data.watchface.MINUTE_HAND_LENGTH_FRACTION_MAXIMUM
 import com.example.android.wearable.alpha.data.watchface.MINUTE_HAND_LENGTH_FRACTION_MINIMUM
@@ -66,6 +67,7 @@ import kotlinx.coroutines.plus
  * new image preview via screenshot class and triggers a listener (which creates new data for the
  * [StateFlow] that feeds back to the Activity).
  */
+// TODO: rm unused settings
 class WatchFaceConfigStateHolder(
     private val scope: CoroutineScope,
     private val activity: ComponentActivity
@@ -73,7 +75,7 @@ class WatchFaceConfigStateHolder(
     private lateinit var editorSession: EditorSession
 
     // Keys from Watch Face Data Structure
-    private lateinit var colorStyleKey: UserStyleSetting.ListUserStyleSetting
+    lateinit var colorStyleKey: UserStyleSetting.ListUserStyleSetting
     private lateinit var drawPipsKey: UserStyleSetting.BooleanUserStyleSetting
     private lateinit var minuteHandLengthKey: UserStyleSetting.DoubleRangeUserStyleSetting
 
@@ -146,12 +148,9 @@ class WatchFaceConfigStateHolder(
             complicationsPreviewData
         )
 
-        val colorStyle =
-            userStyle[colorStyleKey] as UserStyleSetting.ListUserStyleSetting.ListOption
-        val ticksEnabledStyle =
-            userStyle[drawPipsKey] as UserStyleSetting.BooleanUserStyleSetting.BooleanOption
-        val minuteHandStyle =
-            userStyle[minuteHandLengthKey] as UserStyleSetting.DoubleRangeUserStyleSetting.DoubleRangeOption
+        val colorStyle = userStyle[colorStyleKey] as UserStyleSetting.ListUserStyleSetting.ListOption
+        val ticksEnabledStyle = userStyle[drawPipsKey] as UserStyleSetting.BooleanUserStyleSetting.BooleanOption
+        val minuteHandStyle = userStyle[minuteHandLengthKey] as UserStyleSetting.DoubleRangeUserStyleSetting.DoubleRangeOption
 
         Log.d(TAG, "/new values: $colorStyle, $ticksEnabledStyle, $minuteHandStyle")
 
@@ -186,8 +185,7 @@ class WatchFaceConfigStateHolder(
         // the color style (which contains all the possible options for that style setting).
         for (userStyleSetting in userStyleSettingList) {
             if (userStyleSetting.id == UserStyleSetting.Id(COLOR_STYLE_SETTING)) {
-                val colorUserStyleSetting =
-                    userStyleSetting as UserStyleSetting.ListUserStyleSetting
+                val colorUserStyleSetting = userStyleSetting as UserStyleSetting.ListUserStyleSetting
 
                 // Loops over the UserStyleSetting.Option colors (all possible values for the key)
                 // to find the matching option, and if it exists, sets it as the color style.
@@ -200,6 +198,11 @@ class WatchFaceConfigStateHolder(
             }
         }
     }
+
+    fun getColorStyle(): ColorStyleIdAndResourceIds =
+        editorSession.userStyle.value[UserStyleSetting.Id(COLOR_STYLE_SETTING)]?.id?.toString()?.let { id ->
+            ColorStyleIdAndResourceIds.values().first { it.id == id }
+        } ?: ColorStyleIdAndResourceIds.WHITE
 
     fun setDrawPips(enabled: Boolean) {
         setUserStyleOption(

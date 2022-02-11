@@ -30,7 +30,7 @@ import com.example.android.wearable.alpha.utils.createUserStyleSchema
 
 /**
  * Handles much of the boilerplate needed to implement a watch face (minus rendering code; see
- * [AnalogWatchCanvasRenderer]) including the complications and settings (styles user can change on
+ * [DigitalWatchCanvasRenderer]) including the complications and settings (styles user can change on
  * the watch face).
  */
 class AnalogWatchFaceService : WatchFaceService() {
@@ -39,8 +39,7 @@ class AnalogWatchFaceService : WatchFaceService() {
     override fun createUserStyleSchema(): UserStyleSchema =
         createUserStyleSchema(context = applicationContext)
 
-    // Creates all complication user settings and adds them to the existing user settings
-    // repository.
+    // Creates all complication user settings and adds them to the existing user settings repository.
     override fun createComplicationSlotsManager(
         currentUserStyleRepository: CurrentUserStyleRepository
     ): ComplicationSlotsManager = createComplicationSlotManager(
@@ -57,7 +56,7 @@ class AnalogWatchFaceService : WatchFaceService() {
         Log.d(TAG, "createWatchFace()")
 
         // Creates class that renders the watch face.
-        val renderer = AnalogWatchCanvasRenderer(
+        val renderer = DigitalWatchCanvasRenderer(
             context = applicationContext,
             surfaceHolder = surfaceHolder,
             watchState = watchState,

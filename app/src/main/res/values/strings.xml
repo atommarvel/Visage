@@ -15,9 +15,9 @@
      limitations under the License.
 -->
 <resources>
-    <string name="app_name" translatable="false">WatchFace Alpha (Kotlin)</string>
+    <string name="app_name" translatable="false">Visage</string>
 
-    <string name="analog_watch_face_name" translatable="false">Alpha Analog</string>
+    <string name="analog_watch_face_name" translatable="false">Visage</string>
 
     <!-- Name of watchface style category for selecting the color theme [CHAR LIMIT=20] -->
     <string name="colors_style_setting">Colors</string>
@@ -83,7 +83,7 @@
     <!-- Title for config activity for watch face (settings). -->
     <string name="title_activity_watch_face_config">Configuration</string>
     <!-- Use of "\n" is to conserve horizontal space in config menu. -->
-    <string name="activity_config_color_style_picker_label">Color\nStyle</string>
+    <string name="activity_config_color_style_picker_label">Cycle Color\nStyle</string>
     <string name="activity_config_ticks_enabled_label">Ticks\nEnabled</string>
     <string name="activity_config_slider_text_label">Minute Hand Size</string>
     <!-- Content Descriptions -->

@@ -53,7 +53,7 @@ private const val FRAME_PERIOD_MS_DEFAULT: Long = 16L
  * Renders watch face via data in Room database. Also, updates watch face state based on setting
  * changes by user via [userStyleRepository.addUserStyleListener()].
  */
-class AnalogWatchCanvasRenderer(
+class DigitalWatchCanvasRenderer(
     private val context: Context,
     surfaceHolder: SurfaceHolder,
     watchState: WatchState,
