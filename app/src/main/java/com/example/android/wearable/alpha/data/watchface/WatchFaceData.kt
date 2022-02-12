@@ -15,8 +15,6 @@
  */
 package com.example.android.wearable.alpha.data.watchface
 
-private const val NUMBER_RADIUS_FRACTION = 0.45f
-
 /**
  * Represents all data needed to render an analog watch face.
  */

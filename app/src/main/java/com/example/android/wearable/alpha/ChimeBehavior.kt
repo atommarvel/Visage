@@ -77,10 +77,6 @@ class ChimeBehavior(private val context: Context) {
         }
     }
 
-    private fun findNextMinChime(): Calendar = Calendar.getInstance().apply {
-        timeInMillis += 1000 * 60
-    }
-
     private fun vibrate() {
         vibrator?.vibrate(VibrationEffect.createWaveform(longArrayOf(500L, 100L, 200L, 100L, 200L), intArrayOf(255, 0, 255, 0, 255), -1))
     }

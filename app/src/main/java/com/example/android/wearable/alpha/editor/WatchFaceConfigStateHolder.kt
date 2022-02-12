@@ -66,7 +66,7 @@ class WatchFaceConfigStateHolder(
     private lateinit var editorSession: EditorSession
 
     // Keys from Watch Face Data Structure
-    lateinit var colorStyleKey: UserStyleSetting.ListUserStyleSetting
+    private lateinit var colorStyleKey: UserStyleSetting.ListUserStyleSetting
 
     val uiState: StateFlow<EditWatchFaceUiState> =
         flow<EditWatchFaceUiState> {

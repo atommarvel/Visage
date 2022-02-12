@@ -74,10 +74,6 @@ class DigitalWatchCanvasRenderer(
         typeface = context.resources.getFont(R.font.firacode)
     }
 
-    // Changed when setting changes cause a change in the minute hand arm (triggered by user in
-    // updateUserStyle() via userStyleRepository.addUserStyleListener()).
-    private var armLengthChangedRecalculateClockHands: Boolean = false
-
     // Default size of watch face drawing area, that is, a no size rectangle. Will be replaced with
     // valid dimensions from the system.
     private var currentWatchFaceSize = Rect(0, 0, 0, 0)

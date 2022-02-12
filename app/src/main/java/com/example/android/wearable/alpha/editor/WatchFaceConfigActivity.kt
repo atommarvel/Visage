@@ -87,6 +87,7 @@ class WatchFaceConfigActivity : ComponentActivity() {
     fun onClickColorStylePickerButton(view: View) {
         Log.d(TAG, "onClickColorStylePickerButton() $view")
         // Go to the next color style from the list of color styles
+        // TODO: cycling is not accurate... why?
         val currentColorStyle = stateHolder.getColorStyle()
         val colorStyleIdAndResourceIdsList = enumValues<ColorStyleIdAndResourceIds>()
         val currentColorIndex = colorStyleIdAndResourceIdsList.indexOf(currentColorStyle)
