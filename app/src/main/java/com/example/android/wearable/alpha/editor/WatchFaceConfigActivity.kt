@@ -22,14 +22,7 @@ import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.android.wearable.alpha.data.watchface.ColorStyleIdAndResourceIds
 import com.example.android.wearable.alpha.databinding.ActivityWatchFaceConfigBinding
-import com.example.android.wearable.alpha.editor.WatchFaceConfigStateHolder.Companion.MINUTE_HAND_LENGTH_DEFAULT_FOR_SLIDER
-import com.example.android.wearable.alpha.editor.WatchFaceConfigStateHolder.Companion.MINUTE_HAND_LENGTH_MAXIMUM_FOR_SLIDER
-import com.example.android.wearable.alpha.editor.WatchFaceConfigStateHolder.Companion.MINUTE_HAND_LENGTH_MINIMUM_FOR_SLIDER
-import com.example.android.wearable.alpha.utils.BOTTOM_COMPLICATION_ID
-import com.example.android.wearable.alpha.utils.LEFT_COMPLICATION_ID
 import com.example.android.wearable.alpha.utils.LONG_BOTTOM_COMPLICATION_ID
-import com.example.android.wearable.alpha.utils.RIGHT_COMPLICATION_ID
-import com.example.android.wearable.alpha.utils.TOP_COMPLICATION_ID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -37,7 +30,6 @@ import kotlinx.coroutines.launch
  * Allows user to edit certain parts of the watch face (color style, ticks displayed, minute arm
  * length) by using the [WatchFaceConfigStateHolder]. (All widgets are disabled until data is loaded.)
  */
-// TODO: rm unused settings
 class WatchFaceConfigActivity : ComponentActivity() {
     private val stateHolder: WatchFaceConfigStateHolder by lazy {
         WatchFaceConfigStateHolder(
@@ -57,20 +49,8 @@ class WatchFaceConfigActivity : ComponentActivity() {
 
         // Disable widgets until data loads and values are set.
         binding.colorStylePickerButton.isEnabled = false
-        binding.ticksEnabledSwitch.isEnabled = false
-        binding.minuteHandLengthSlider.isEnabled = false
-
-        // Set max and min.
-        binding.minuteHandLengthSlider.valueTo = MINUTE_HAND_LENGTH_MAXIMUM_FOR_SLIDER
-        binding.minuteHandLengthSlider.valueFrom = MINUTE_HAND_LENGTH_MINIMUM_FOR_SLIDER
-        binding.minuteHandLengthSlider.value = MINUTE_HAND_LENGTH_DEFAULT_FOR_SLIDER
 
         binding.preview.bottomComplication.setOnClickListener { onClickLongBottomComplicationButton(it) }
-
-        binding.minuteHandLengthSlider.addOnChangeListener { slider, value, fromUser ->
-            Log.d(TAG, "addOnChangeListener(): $slider, $value, $fromUser")
-            stateHolder.setMinuteHandArmLength(value)
-        }
 
         lifecycleScope.launch(Dispatchers.Main.immediate) {
             stateHolder.uiState.collect { uiState: WatchFaceConfigStateHolder.EditWatchFaceUiState ->
@@ -94,26 +74,18 @@ class WatchFaceConfigActivity : ComponentActivity() {
         userStylesAndPreview: WatchFaceConfigStateHolder.UserStylesAndPreview
     ) {
         Log.d(TAG, "updateWatchFacePreview: $userStylesAndPreview")
-
         val colorStyleId: String = userStylesAndPreview.colorStyleId
         Log.d(TAG, "\tselected color style: $colorStyleId")
-
-        binding.ticksEnabledSwitch.isChecked = userStylesAndPreview.ticksEnabled
-        binding.minuteHandLengthSlider.value = userStylesAndPreview.minuteHandLength
         binding.preview.watchFaceBackground.setImageBitmap(userStylesAndPreview.previewImage)
-
         enabledWidgets()
     }
 
     private fun enabledWidgets() {
         binding.colorStylePickerButton.isEnabled = true
-        binding.ticksEnabledSwitch.isEnabled = true
-        binding.minuteHandLengthSlider.isEnabled = true
     }
 
     fun onClickColorStylePickerButton(view: View) {
         Log.d(TAG, "onClickColorStylePickerButton() $view")
-
         // Go to the next color style from the list of color styles
         val currentColorStyle = stateHolder.getColorStyle()
         val colorStyleIdAndResourceIdsList = enumValues<ColorStyleIdAndResourceIds>()
@@ -122,34 +94,9 @@ class WatchFaceConfigActivity : ComponentActivity() {
         stateHolder.setColorStyle(newColorStyle.id)
     }
 
-    fun onClickLeftComplicationButton(view: View) {
-        Log.d(TAG, "onClickLeftComplicationButton() $view")
-        stateHolder.setComplication(LEFT_COMPLICATION_ID)
-    }
-
-    fun onClickRightComplicationButton(view: View) {
-        Log.d(TAG, "onClickRightComplicationButton() $view")
-        stateHolder.setComplication(RIGHT_COMPLICATION_ID)
-    }
-
-    fun onClickTopComplicationButton(view: View) {
-        Log.d(TAG, "onClickTopComplicationButton() $view")
-        stateHolder.setComplication(TOP_COMPLICATION_ID)
-    }
-
-    fun onClickBottomComplicationButton(view: View) {
-        Log.d(TAG, "onClickBottomComplicationButton() $view")
-        stateHolder.setComplication(BOTTOM_COMPLICATION_ID)
-    }
-
-    fun onClickLongBottomComplicationButton(view: View) {
+    private fun onClickLongBottomComplicationButton(view: View) {
         Log.d(TAG, "onClickBottomComplicationButton() $view")
         stateHolder.setComplication(LONG_BOTTOM_COMPLICATION_ID)
-    }
-
-    fun onClickTicksEnabledSwitch(view: View) {
-        Log.d(TAG, "onClickTicksEnabledSwitch() $view")
-        stateHolder.setDrawPips(binding.ticksEnabledSwitch.isChecked)
     }
 
     companion object {
