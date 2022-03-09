@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.BatteryManager
 import android.os.VibrationEffect
 import android.os.Vibrator
 import androidx.core.content.ContextCompat.getSystemService
@@ -78,7 +79,15 @@ class ChimeBehavior(private val context: Context) {
     }
 
     private fun vibrate() {
-        vibrator?.vibrate(VibrationEffect.createWaveform(longArrayOf(500L, 100L, 200L, 100L, 200L), intArrayOf(255, 0, 255, 0, 255), -1))
+        if (!isCharging()) {
+            vibrator?.vibrate(VibrationEffect.createWaveform(longArrayOf(500L, 100L, 200L, 100L, 200L), intArrayOf(255, 0, 255, 0, 255), -1))
+        }
+    }
+
+    private fun isCharging(): Boolean {
+        val intent = context.registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+        val plugged = intent?.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1)
+        return plugged == BatteryManager.BATTERY_PLUGGED_AC || plugged == BatteryManager.BATTERY_PLUGGED_USB || plugged == BatteryManager.BATTERY_PLUGGED_WIRELESS
     }
 
     companion object {
