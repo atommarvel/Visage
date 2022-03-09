@@ -17,6 +17,7 @@
 <resources>
     <!-- constants for watch face element renderer. -->
     <dimen name="time_text_size">55sp</dimen>
+    <dimen name="countdown_text_size">15sp</dimen>
 
     <!-- Values for WatchFaceConfigActivity -->
     <dimen name="activity_config_padding">6dp</dimen>

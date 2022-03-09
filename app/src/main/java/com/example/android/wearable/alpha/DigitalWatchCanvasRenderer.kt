@@ -25,8 +25,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+import java.util.Calendar
 import kotlin.math.abs
 
 // Default for how long each frame is displayed at expected frame rate.
@@ -74,10 +77,19 @@ class DigitalWatchCanvasRenderer(
         typeface = context.resources.getFont(R.font.firacode)
     }
 
+    private val countDownTextPaint = Paint().apply {
+        isAntiAlias = true
+        textSize = context.resources.getDimensionPixelSize(R.dimen.countdown_text_size).toFloat() // TODO #2ar2t52: make font size not arbitrary
+        isAntiAlias = true
+        textAlign = Paint.Align.CENTER
+        typeface = context.resources.getFont(R.font.firacode)
+    }
+
     // Default size of watch face drawing area, that is, a no size rectangle. Will be replaced with
     // valid dimensions from the system.
     private var currentWatchFaceSize = Rect(0, 0, 0, 0)
-    private var textY = 0f
+    private var timeTextY = 0f
+    private var countDownTextY = 0f
     private var watchFaceCenterY: Float = 0f
     private var watchFaceCenterX: Float = 0f
     private var textBounds = Rect(0, 0, 0, 0)
@@ -106,7 +118,7 @@ class DigitalWatchCanvasRenderer(
             when (options.key.id.toString()) {
                 COLOR_STYLE_SETTING -> {
                     val listOption = options.value as
-                            UserStyleSetting.ListUserStyleSetting.ListOption
+                        UserStyleSetting.ListUserStyleSetting.ListOption
 
                     newWatchFaceData = newWatchFaceData.copy(
                         activeColorStyle = ColorStyleIdAndResourceIds.getColorStyleConfig(
@@ -162,7 +174,8 @@ class DigitalWatchCanvasRenderer(
     override fun render(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime) {
         if (currentWatchFaceSize != bounds) {
             currentWatchFaceSize = bounds
-            textY = abs(currentWatchFaceSize.height()) / 3f
+            timeTextY = abs(currentWatchFaceSize.height()) / 3f
+            countDownTextY = currentWatchFaceSize.height().toFloat()
             watchFaceCenterY = abs(currentWatchFaceSize.height()) / 2f
             watchFaceCenterX = abs(currentWatchFaceSize.width()) / 2f
         }
@@ -180,6 +193,7 @@ class DigitalWatchCanvasRenderer(
 
         if (renderParameters.watchFaceLayers.contains(WatchFaceLayer.COMPLICATIONS_OVERLAY)) {
             drawTime(canvas, zonedDateTime)
+            drawCountdown(canvas, zonedDateTime)
         }
 
         if (renderParameters.drawMode == DrawMode.INTERACTIVE &&
@@ -193,7 +207,14 @@ class DigitalWatchCanvasRenderer(
         val timeString = zonedDateTime.format(formatter).lowercase()
         textPaint.color = watchFaceColors.activePrimaryColor
         textPaint.getTextBounds(timeString, 0, timeString.length, textBounds)
-        canvas.drawText(timeString, watchFaceCenterX, textY + (textBounds.height() / 2), textPaint)
+        canvas.drawText(timeString, watchFaceCenterX, timeTextY + (textBounds.height() / 2), textPaint)
+    }
+
+    private fun drawCountdown(canvas: Canvas, zonedDateTime: ZonedDateTime) {
+        val days = ChronoUnit.DAYS.between(zonedDateTime, countDownTargetDate).toString()
+        countDownTextPaint.color = watchFaceColors.activePrimaryColor
+        countDownTextPaint.getTextBounds(days, 0, days.length, textBounds)
+        canvas.drawText(days, watchFaceCenterX, countDownTextY - textBounds.height(), countDownTextPaint)
     }
 
     private fun drawComplications(canvas: Canvas, zonedDateTime: ZonedDateTime) {
@@ -205,6 +226,15 @@ class DigitalWatchCanvasRenderer(
     }
 
     companion object {
+        private val countDownTargetDate = Calendar.getInstance().apply {
+            set(Calendar.MONTH, 0)
+            set(Calendar.DAY_OF_MONTH, 1)
+            set(Calendar.YEAR, 2024)
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+        }.toInstant().atZone(ZoneId.systemDefault())
+
         private const val TAG = "AnalogWatchCanvasRenderer"
         private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("h:mm")
     }
